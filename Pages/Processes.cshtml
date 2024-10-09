@@ -1,0 +1,125 @@
+﻿@page
+@model RafaelHomeCore.Pages.ProcessesModel
+@{
+    ViewData["Title"] = ".NET Projects Manager";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@if (TempData["Info"] != null)
+{
+    <div class="alert alert-info">
+        @TempData["Info"]
+    </div>
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
+
+<h2>Running .NET Projects</h2>
+
+<table class="table table-dark">
+    <thead>
+        <tr>
+            <th>Process ID</th>
+            <th>Name</th>
+            <th>Path</th>
+            <th>Memory Usage</th>
+            <th>Start Time</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Processes != null && Model.Processes.Any())
+        {
+            @foreach (var process in Model.Processes)
+            {
+                <tr>
+                    <td>@process.Id</td>
+                    <td>@Model.GetExecutableName(process)</td>
+                    <td>@(process?.MainModule?.FileName ?? "Unknown")</td>
+                    <td>@(process.WorkingSet64 / 1024 / 1024) MB</td>
+                    <td>
+                        @{
+                            string startTime = "N/A";
+                            try
+                            {
+                                startTime = process.StartTime.ToString();
+                            }
+                            catch (System.ComponentModel.Win32Exception)
+                            {
+                                // Процесс, возможно, уже завершился или защищен системой
+                            }
+                        }
+                        @startTime
+                    </td>
+                    <td>
+                        <form method="post" asp-page-handler="Stop">
+                            <input type="hidden" name="id" value="@process.Id" />
+                            <button type="submit" class="btn btn-danger">Stop</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="6" class="text-center">No running .NET processes found.</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h2>Available .NET Projects</h2>
+
+<table class="table table-dark">
+    <thead>
+        <tr>
+            <th>Directory</th>
+            <th>DLL Path</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.DotnetProjects != null && Model.DotnetProjects.Any())
+        {
+            @foreach (var project in Model.DotnetProjects)
+            {
+                <tr>
+                    <td>@project.Directory</td>
+                    <td>@project.DllPath</td>
+                    <td>
+                        <form method="post" asp-page-handler="Start">
+                            <input type="hidden" name="directory" value="@project.Directory" />
+                            <input type="hidden" name="dllPath" value="@project.DllPath" />
+                            <button type="submit" class="btn btn-primary">Start</button>
+                        </form>
+                        <form method="post" enctype="multipart/form-data" asp-page-handler="UploadUpdate">
+                            <input type="hidden" name="directory" value="@project.Directory" />
+                            <input type="file" name="updateFile" class="form-control-file" required />
+                            <button type="submit" class="btn btn-secondary mt-2">Upload Update</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="3" class="text-center">No available .NET projects found.</td>
+            </tr>
+        }
+    </tbody>
+</table>

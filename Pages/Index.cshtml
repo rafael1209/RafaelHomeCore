@@ -1,0 +1,87 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+        }
+
+        .btn-lg {
+            font-size: 1.5rem;
+            padding: 0;
+            min-height: 350px;
+            width: 100%;
+            border-radius: 5;
+            background-size: cover;
+            background-position: center;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin: 0; 
+        }
+
+        .btn-custom1 {
+            background-image: url('https://picsum.photos/500/300?random=1');
+        }
+
+        .btn-custom2 {
+            background-image: url('https://picsum.photos/200/300?random=2');
+        }
+
+        .btn-custom3 {
+            background-image: url('https://picsum.photos/200/300?random=3');
+        }
+
+        .hero-section {
+            background: url('https://picsum.photos//1920/500') no-repeat center center;
+            background-size: cover;
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+        }
+
+    </style>
+</head>
+<body>
+    <header class="hero-section">
+        <div class="container">
+            <h1 class="display-4">Hey, Rafael Chasman!</h1>
+        </div>
+    </header>
+    <main role="main" class="container mt-4">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <a href="/Processes" class="btn btn-custom1 btn-lg">Server Manager</a>
+            </div>
+            <div class="col-md-4 mb-3">
+                <a href="/Page2" class="btn btn-custom2 btn-lg">Page 2</a>
+            </div>
+            <div class="col-md-4 mb-3">
+                <a href="/Page3" class="btn btn-custom3 btn-lg">Page 3</a>
+            </div>
+        </div>
+    </main>
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/popper.min.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+</body>
+</html>
