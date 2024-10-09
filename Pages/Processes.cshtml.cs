@@ -17,12 +17,15 @@ namespace RafaelHomeCore.Pages
 
         public List<(string Directory, string DllPath)> DotnetProjects { get; set; }
 
+        private string scriptPath = "/home/rafael/start.sh";
+        private string directoryPath = "/home/rafael";
+
         public void OnGet()
         {
             try
             {
                 Processes = Process.GetProcessesByName("dotnet").ToList();
-                string scriptPath = "/home/rafael/start.sh";
+
                 DotnetProjects = GetDotnetProjectsFromScript(scriptPath);
             }
             catch (Exception ex)
@@ -117,7 +120,7 @@ namespace RafaelHomeCore.Pages
         {
             try
             {
-                directory = directory.Replace("~", "/home/rafael");
+                directory = directory.Replace("~", directoryPath);
 
                 var startInfo = new ProcessStartInfo
                 {
@@ -180,14 +183,12 @@ namespace RafaelHomeCore.Pages
                     var dllPath = arguments.Split(' ').FirstOrDefault();
                     if (dllPath != null)
                     {
-                        // Убираем лишние символы и получаем имя файла без расширения
                         return Path.GetFileNameWithoutExtension(dllPath);
                     }
                 }
             }
             catch
             {
-                // Если произошла ошибка, возвращаем "Unknown"
                 return "Unknown";
             }
             return "Unknown";
